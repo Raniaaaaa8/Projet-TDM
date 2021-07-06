@@ -27,6 +27,13 @@ class MainActivity : AppCompatActivity() {
             racine=getRacine.text.toString()
             var ele=ReadDatafromcsvRacine_des_mots_arabe(racine)
             if (ele!=null) displayIdRacine.setText(ele.idRacine)
+
+            /*var IdRacines: Array<ElementscsvMotsdesRacines>? =null
+            val idaya=ReadDatafromcsvMot_des_racines(ele.idRacine)
+            IdRacines?.set(0,idaya )
+            //afficher les aya
+
+            ReadDatafromcsvAya(IdRacines?.get(0)?.ID_Aya)*/
         }
 
 
@@ -97,6 +104,45 @@ class MainActivity : AppCompatActivity() {
                     tub.Racine=tokens[1]
                     tub.idRacine=tokens[0]
                     tub.NBLettre=tokens[7]
+                    break
+                }
+                //line= reader.readLine()
+                //if (line==null) break
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return tub
+    }
+
+
+    //get data from Racine_des_mots_arabe.csv
+    //zsourat  is in format 1:1 aka sourat:aya
+    open fun ReadDatafromcsvMot_des_racines(IdRacine: String?): ElementscsvMotsdesRacines {
+        val tub = ElementscsvMotsdesRacines()
+        val `is`: InputStream = resources.openRawResource(R.raw.motsdesracines1)
+        val reader: BufferedReader = BufferedReader(
+            InputStreamReader(`is`, Charset.forName("UTF-8"))
+        )
+        var line = ""
+        try {
+
+            reader.readLine()
+
+            while (reader.readLine().also { line=it } != null ) {
+
+                val tokens = line.split(",").toTypedArray()
+                //read data
+
+                //Log.d("token3",tokens[3].toString())
+                //Log.d("di",sourat)
+                if (tokens[2]==IdRacine) { //search in column Z
+
+                    tub.ID_Aya=tokens[1]
+                    tub.ID_Word=tokens[0]
+
+                    tub.idRacine=tokens[2]
+                    tub.englishWord=tokens[3]
                     break
                 }
                 //line= reader.readLine()
