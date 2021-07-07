@@ -1,5 +1,7 @@
 package com.example.export
 
+import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -40,12 +42,15 @@ class home_activity : AppCompatActivity() {
                 //recuperer le input aka la racine a cherché
                 racine=searchView.query.toString()
                 Log.d("search", racine!!)
+                /*val intent =
+                    Intent(applicationContext, AffichageAya::class.java)
+                intent.putExtra("racine",racine )*/
 
                 //rechercher le Id racine dans Racine des mots
                 var ele=ReadDatafromcsvRacine_des_mots_arabe(racine)
                 if (ele!=null) {
                     //afficher les aya
-                        //recherche dans Mot des quran les aya ayant le id_racine trouvé
+                    //recherche dans Mot des quran les aya ayant le id_racine trouvé
                     var ayat= ReadDatafromcsvMot_des_racines(ele.idRacine)//mutableListOf(idaya)// = arrayOf<ElementscsvMotsdesRacines>()
 
 
@@ -59,22 +64,30 @@ class home_activity : AppCompatActivity() {
                         for (i in ayat) {
                             if (cpt == ayat.size) break
                             f = ReadDatafromcsvAya(ayat?.get(cpt)?.ID_Aya).Text_AR
-                            if (f != null) str = str + "  ***  " + f
-
-                            Log.d("cpt", cpt.toString())
                             var str2 = ayat?.get(cpt)?.ID_Aya
                             if (str2 != null)
                                 Log.d("ayat", str2)
+                            if (f != null) str = str + "  \n**"+"ID_AYA= "+str2+"**\n" + f
+
+                            Log.d("cpt", cpt.toString())
+
                             if (f != null) {
                                 Log.d("f", f)
                             }
+
                             cpt++
                         }
                     }
-                    if (str!=null) Log.d("str",str)
+                    if (str!=null) {
+                        Log.d("str",str)
+                        text_view_result.setText(str)
+                    }
 
                 }
                 else Log.d("erreur ele", "idracine pas trouvé")
+
+                //startActivity(intent)
+
 
 
 
